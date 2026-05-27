@@ -71,9 +71,10 @@
             margin-bottom: 4px;
         }
         .app-logo {
-            font-size: 2.8em;
-            margin-bottom: 2px;
             display: block;
+            width: 80px;
+            height: auto;
+            margin: 0 auto 8px;
         }
         .app-title {
             font-size: 1.6em;
@@ -106,7 +107,7 @@
             border: 1px solid var(--border);
         }
 
-        /* ===== BALANCE ROW (NEW COMPACT DESIGN) ===== */
+        /* ===== BALANCE ROW (COMPACT) ===== */
         .balance-row {
             display: flex;
             align-items: center;
@@ -395,6 +396,7 @@
             .balance-max { font-size: 0.55em; }
             .btn { font-size: 0.85em; padding: 10px 14px; }
             th, td { padding: 8px 4px; font-size: 0.75em; }
+            .app-logo { width: 70px; }
         }
     </style>
 </head>
@@ -403,8 +405,9 @@
         <!-- ===== HEADER CARD ===== -->
         <div class="card">
             <div class="app-header">
-                <span class="app-logo">🛒</span>
-                <h1 class="app-title">ไทยช่วยไทย พลัส</h1>
+                <!-- เพิ่มโลโก้จากเว็บไซต์โครงการ -->
+                <img src="https://www.ไทยช่วยไทยพลัส.th/assets/img/tct_logo.png" alt="โลโก้ไทยช่วยไทยพลัส" class="app-logo">
+ 
                 <p class="app-subtitle">โครงการช่วยค่าครองชีพ 60/40</p>
             </div>
 
@@ -500,7 +503,7 @@
         (function() {
             const DAILY_LIMIT = 200;
             const MONTHLY_LIMIT = 1000;
-            const STORAGE_KEY = 'thaihelp60_40_v3';
+            const STORAGE_KEY = 'thaihelp60_40_v4';
             const PROGRAM_START = new Date('2026-06-01');
 
             function getTodayDateString() {
