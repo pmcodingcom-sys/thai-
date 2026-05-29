@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>🇹🇭 ไทยช่วยไทย พลัส (60/40)</title>
 
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
     <!-- Flaticon Uicons CDN -->
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
 
@@ -32,7 +37,7 @@
         }
 
         body {
-            font-family: 'Sarabun', 'Kanit', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Kanit', 'Sarabun', -apple-system, BlinkMacSystemFont, sans-serif;
             background: radial-gradient(ellipse at 50% 0%, #ffedd5 0%, #fff7ed 50%, #fff 100%);
             min-height: 100vh;
             display: flex;
@@ -42,6 +47,7 @@
             -webkit-tap-highlight-color: transparent;
             font-size: var(--font-base);
             line-height: 1.5;
+            font-weight: 400;
         }
 
         .container {
@@ -81,6 +87,7 @@
             font-size: clamp(0.7em, 3vw, 0.9em);
             color: var(--text-secondary);
             margin-top: 2px;
+            font-weight: 400;
         }
 
         /* Date */
@@ -90,7 +97,7 @@
             gap: 6px;
             background: var(--primary-light);
             color: var(--primary-dark);
-            font-weight: 600;
+            font-weight: 500;
             padding: clamp(6px, 2vw, 10px) clamp(12px, 4vw, 18px);
             border-radius: 50px;
             font-size: clamp(0.75em, 3.5vw, 0.9em);
@@ -182,7 +189,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            font-weight: 600;
+            font-weight: 500;
             font-size: clamp(0.8em, 3.5vw, 0.95em);
             margin-bottom: 6px;
             color: var(--text);
@@ -199,12 +206,13 @@
             padding: clamp(10px, 3vw, 14px) clamp(12px, 3vw, 16px);
             padding-right: 50px;
             font-size: clamp(1em, 4vw, 1.15em);
+            font-family: 'Kanit', sans-serif;
+            font-weight: 500;
             border: 2px solid var(--border);
             border-radius: var(--radius);
             outline: none;
             background: #fafaf9;
             color: var(--text);
-            font-weight: 500;
         }
         .input-wrapper input:focus {
             border-color: var(--primary);
@@ -216,7 +224,7 @@
             right: 14px;
             top: 50%;
             transform: translateY(-50%);
-            font-weight: 600;
+            font-weight: 500;
             color: var(--text-secondary);
             font-size: 0.9em;
             pointer-events: none;
@@ -236,6 +244,7 @@
             border-radius: 50px;
             font-weight: 600;
             font-size: clamp(0.8em, 3.5vw, 0.95em);
+            font-family: 'Kanit', sans-serif;
             cursor: pointer;
             border: none;
             white-space: nowrap;
@@ -307,7 +316,7 @@
         }
         .section-title {
             font-size: clamp(0.9em, 4vw, 1.05em);
-            font-weight: 700;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -346,6 +355,7 @@
             font-size: 1.1em;
             padding: 4px;
             border-radius: 50%;
+            cursor: pointer;
         }
         .delete-btn:hover { background: #fef2f2; color: var(--danger); }
         .no-data {
@@ -353,6 +363,26 @@
             color: #a8a29e;
             padding: 20px;
             font-size: 0.9em;
+        }
+
+        /* Footer / Credit */
+        .footer-credit {
+            text-align: center;
+            padding: 12px 0 4px;
+            font-size: clamp(0.7em, 2.5vw, 0.8em);
+            color: var(--text-secondary);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .footer-credit i {
+            color: var(--primary);
+        }
+        .footer-credit strong {
+            font-weight: 600;
+            color: var(--primary-dark);
         }
     </style>
 </head>
@@ -440,13 +470,18 @@
             </div>
             <div class="no-data" id="noHistory">ยังไม่มีรายการใช้จ่าย</div>
         </div>
+
+        <!-- Footer Credit -->
+        <div class="footer-credit">
+            <i class="fi fi-rr-code-simple"></i> พัฒนาโดย <strong>&nbsp;นายโซเฟียน สะลาแม</strong>
+        </div>
     </div>
 
     <script>
         (function() {
             const DAILY_LIMIT = 200;
             const MONTHLY_LIMIT = 1000;
-            const STORAGE_KEY = 'thaihelp60_40_v5';
+            const STORAGE_KEY = 'thaihelp60_40_v7';
             const PROGRAM_START = new Date('2026-06-01');
 
             function getTodayDateString() {
@@ -481,14 +516,20 @@
                     const [y, m] = t.date.split('-');
                     if (`${y}-${m}` === monthKey) usedMonthly += t.govPaid;
                 });
-                return { usedDaily, usedMonthly };
+                return {
+                    usedDaily: Math.round(usedDaily * 100) / 100,
+                    usedMonthly: Math.round(usedMonthly * 100) / 100
+                };
             }
 
             function updateBalanceDisplay() {
                 const transactions = loadTransactions();
                 const { usedDaily, usedMonthly } = computeUsed(transactions);
-                document.getElementById('remainDaily').textContent = Math.max(DAILY_LIMIT - usedDaily, 0);
-                document.getElementById('remainMonthly').textContent = Math.max(MONTHLY_LIMIT - usedMonthly, 0);
+                const remainDaily = Math.round((DAILY_LIMIT - usedDaily) * 100) / 100;
+                const remainMonthly = Math.round((MONTHLY_LIMIT - usedMonthly) * 100) / 100;
+                
+                document.getElementById('remainDaily').textContent = Math.max(remainDaily, 0);
+                document.getElementById('remainMonthly').textContent = Math.max(remainMonthly, 0);
             }
 
             function renderHistory() {
@@ -607,7 +648,7 @@
                 transactions.push({
                     date: getTodayDateString(),
                     time: timeStr,
-                    total: total,
+                    total: Math.round(total * 100) / 100,
                     govPaid: govPaid,
                     userPaid: userPaid
                 });
